@@ -31,7 +31,7 @@ export default function Home() {
     
 
     const getUser=async ()=>{
-      const response = await fetch(`http://localhost:5000/api/auth/getuser`, {
+      const response = await fetch(`https://acceredian-backend.onrender.com/api/auth/getuser`, {
         method: 'GET', 
     
         headers: {
@@ -71,7 +71,10 @@ export default function Home() {
          <div className='text'>
          Respected user Please Login
          </div>
+         <div>
          <Link to="/login"><button className='button'>Login</button></Link>
+         <Link to="/register"><button className='button'>Register</button></Link>
+         </div>
         </div>
         }
     </div>
