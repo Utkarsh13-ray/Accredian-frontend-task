@@ -16,7 +16,8 @@ const Register = () => {
   const [Credentials,setCredentials]=useState({
     email:undefined,
     username:undefined,
-    password:undefined
+    password:undefined,
+    cpassword:undefined
 })
 
 
@@ -26,10 +27,11 @@ const handleChange = e => {
 
 const handleClick=async e=>{
   e.preventDefault();
-  console.log(Credentials);
-      const {username,email,password}=Credentials;
-      const response = await fetch("http://localhost:5000/api/auth/createuser", {
-          method: 'POST', 
+  const {username,email,password,cpassword}=Credentials;
+  if(password===cpassword){
+   
+    const response = await fetch("http://localhost:5000/api/auth/createuser", {
+      method: 'POST', 
       
           headers: {
             'Content-Type': 'application/json',
@@ -57,10 +59,10 @@ const handleClick=async e=>{
               });
             }, 1000); 
             // props.showAlert("Account created successfully","success");
-        }else{
+          }else{
             //  console.log("Invalid credentials","danger");
             setTimeout(() => {
-        
+              
               return toast.error("Invalid Credentials", {
                 position: "top-right",
                 autoClose: 3000,
@@ -70,10 +72,27 @@ const handleClick=async e=>{
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+              });
+              
+            }, 1000); 
+            
+          }
           
-          }, 1000); 
-      
+        }else{
+          console.log(Credentials);
+                      //  console.log("Invalid credentials","danger");
+                      setTimeout(() => {
+          toast.error("Passwords do not match", {
+            position: "top-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+          })
+        }, 1000); 
         }
   }
 
@@ -109,6 +128,9 @@ const handleClick=async e=>{
 
                   <FormGroup>
                     <input type='password' placeholder='Password' required id='password' onChange={handleChange}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <input type='password' placeholder='Confirm Password' required id='cpassword' onChange={handleChange}/>
                   </FormGroup>
 
                   <Button className='btn login-btn secondary_btn auth_btn' type='submit'>Create Account</Button>
