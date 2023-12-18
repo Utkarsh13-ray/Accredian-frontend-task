@@ -7,6 +7,7 @@ import userIcon from './user.png'
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import Spinner from './Spinner/Spinner';
 
 
 const Login = () => {  
@@ -16,6 +17,8 @@ const Login = () => {
     email:undefined,
     password:undefined
 })
+
+const [loading, setLoading]=useState(0)
  
 
 const handleChange = e => {
@@ -24,6 +27,7 @@ const handleChange = e => {
 
 const handleClick=async e=>{
   e.preventDefault();
+  setLoading(1)
   const response = await fetch("https://acceredian-backend.onrender.com/api/auth/login", {
       method: 'POST', 
   
@@ -53,9 +57,10 @@ const handleClick=async e=>{
           });
         }, 1000); 
         // props.showAlert("Logged in successfully","green");
-
+        setLoading(0)
     }else{
         //  props.showAlert("Invalid credentials","red");
+        setLoading(0)
         setTimeout(() => {
         
             return toast.error("Invalid Credentials", {
@@ -79,7 +84,7 @@ const handleClick=async e=>{
     <section className='login-section'>
 <ToastContainer />
 
-      <Container>
+     {loading?<Spinner/>: <Container>
         <Row>
           <Col lg='8' className='m-auto'>
             <div className='login-container d-flex justify-content-between align-items-center'>
@@ -109,7 +114,7 @@ const handleClick=async e=>{
             </div>
           </Col>
         </Row>
-      </Container>
+      </Container>}
     </section>
   )
 }

@@ -9,10 +9,13 @@ import userIcon from './user.png'
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from 'react';
+import Spinner from './Spinner/Spinner';
 
 
 const Register = () => {
  const navigate=useNavigate();
+ const [loading,setLoading]=useState(0)
   const [Credentials,setCredentials]=useState({
     email:undefined,
     username:undefined,
@@ -21,12 +24,18 @@ const Register = () => {
 })
 
 
+
+
 const handleChange = e => {
     setCredentials(prev=>({...prev, [e.target.id]:e.target.value}))
 };
 
+useEffect(()=>{
+ console.log()
+},[]);
 const handleClick=async e=>{
   e.preventDefault();
+  setLoading(1)
   const {username,email,password,cpassword}=Credentials;
   if(password===cpassword){
    
@@ -43,12 +52,12 @@ const handleClick=async e=>{
         console.log(json);
         if(json.success){
             //redirect
-            localStorage.setItem('token',json.authtoken);
+            // localStorage.setItem('token',json.authtoken);
     
          
-            navigate('/')
+            navigate('/login')
             setTimeout(() => {
-              return    toast.success("Registered Sucessfully", {
+              return    toast.success("Registered Succesfull, Please login", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -60,8 +69,10 @@ const handleClick=async e=>{
               });
             }, 1000); 
             // props.showAlert("Account created successfully","success");
+            setLoading(0)
           }else{
             //  console.log("Invalid credentials","danger");
+            setLoading(0)
             setTimeout(() => {
               
               return toast.error("Invalid Credentials", {
@@ -104,7 +115,7 @@ const handleClick=async e=>{
     <section className='login-section'>
 <ToastContainer />
 
-      <Container>
+      {loading?<Spinner/>:<Container>
         <Row>
           <Col lg='8' className='m-auto'>
             <div className='login-container d-flex justify-content-between align-items-center'>
@@ -141,7 +152,7 @@ const handleClick=async e=>{
             </div>
           </Col>
         </Row>
-      </Container>
+      </Container>}
     </section>
   )
 }
